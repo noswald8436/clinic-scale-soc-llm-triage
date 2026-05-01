@@ -31,3 +31,8 @@ venv/
 # Runtime state (do not commit)
 05-triage-assistant/live_agent/state.json
 05-triage-assistant/live_config.json
+
+# Runtime state (do not track)
+05-triage-assistant/live_agent/state.json
+05-triage-assistant/live_config.json
+src/live_agent/state.json
