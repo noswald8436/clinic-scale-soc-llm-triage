@@ -15,3 +15,4 @@ If you're reviewing this repository for the capstone:
 - Triage workflow: `docs/triage-workflow.md`
 
 - Detections list: `docs/detections.md`
+- Detections quick table: `docs/detections-table.md`
