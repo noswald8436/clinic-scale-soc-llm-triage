@@ -1,0 +1,22 @@
+{
+  "case_id": "case_003_100210",
+  "truth_classification": "incident",
+  "scenario_label": "ehr_upstream_failure_502",
+  "environment": {
+    "org": "mock_clinic",
+    "site": "lab",
+    "service": "ehr",
+    "asset_role": "web_tier"
+  },
+  "alert": {
+    "timestamp": "Apr 28, 2026 @ 15:14:06.996",
+    "rule_id": "100210",
+    "rule_level": 7,
+    "rule_description": "EHRWEB: nginx 502 on /api/login (upstream/app failure)",
+    "agent_name": "LNX-WEB-01",
+    "agent_ip": "10.10.10.103 ",
+    "location": "journald"
+  },
+  "raw_log": "",
+  "notes": "Controlled test: APP01 ehrapp service stopped to generate upstream failure."
+}

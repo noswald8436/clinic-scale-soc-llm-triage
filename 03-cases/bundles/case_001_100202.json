@@ -1,0 +1,20 @@
+{
+  "case_id": "case_001_100202",
+  "truth_classification": "suspicious",
+  "scenario_label": "ehr_login_failed_single",
+  "alert": {
+    "timestamp": "2026-04-28T19:06:40.321628+00:00",
+    "rule_id": "100202",
+    "rule_level": 6,
+    "rule_description": "EHRAPP: login failed",
+    "agent_name": "LNX-APP-01",
+    "agent_ip": "10.10.10.101"
+  },
+  "key_fields": {
+    "src_ip": "10.10.20.102",
+    "path": "/login",
+    "username": "clinicshared",
+    "reason": "bad_password"
+  },
+  "notes": "Single failed login; could be user mistake or probing."
+}

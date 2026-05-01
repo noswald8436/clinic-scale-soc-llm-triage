@@ -1,0 +1,49 @@
+{
+  "case_id": "case_002_100205",
+  "truth_classification": "incident",
+  "scenario_label": "ehr_bruteforce_login_failures",
+  "environment": {
+    "org": "mock_clinic",
+    "site": "lab",
+    "segment": "servers",
+    "service": "ehr",
+    "asset_role": "app_tier"
+  },
+  "alert": {
+    "timestamp_utc": "2026-04-28T19:06:39.188619+00:00",
+    "rule_id": "100205",
+    "rule_level": 10,
+    "rule_description": "EHRAPP: possible brute force (5 failed logins in 5 minutes)",
+    "agent_name": "LNX-APP-01",
+    "agent_ip": "10.10.10.101",
+    "location": "/var/log/ehrapp/app.log"
+  },
+  "entities": {
+    "src_ip": "10.10.20.102",
+    "username": "clinicshared",
+    "http_path": "/login"
+  },
+  "summary_observed": [
+    "Multiple failed login attempts occurred within the correlation window.",
+    "Activity is consistent with brute-force or credential guessing against the EHR service."
+  ],
+  "analyst_questions": [
+    "Is this username expected to be used on a shared workstation?",
+    "Were there any successful logins for the same username around this time?",
+    "Did other clinic endpoints show similar authentication failures (spray behavior)?"
+  ],
+  "recommended_next_steps": [
+    "Check for recent successful logins for the same username and source IP.",
+    "Review nginx/web logs for request rate, user-agent patterns, and other endpoints accessed.",
+    "If confirmed malicious: reset/disable the account temporarily and block the source IP at the firewall.",
+    "Check whether any privileged accounts were targeted and whether MFA/conditional access is in place."
+  ],
+  "evidence_excerpt": {
+    "rule": {
+      "id": "100205",
+      "description": "EHRAPP: possible brute force (5 failed logins in 5 minutes)",
+      "firedtimes": "2"
+    },
+    "raw_excerpt": ""
+  }
+}
