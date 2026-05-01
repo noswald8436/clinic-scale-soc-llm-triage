@@ -1,0 +1,4 @@
+case_id,rule_id,manual_classification,manual_priority,manual_mttt_seconds,cloud_classification,cloud_priority,cloud_confidence,cloud_elapsed_seconds,cloud_model
+case_001_100202,100202,suspicious,medium,75,suspicious,medium,0.7,9.2973,gpt-4.1-mini
+case_002_100205,100205,incident,high,130,incident,high,0.9,3.6559,gpt-4.1-mini
+case_003_100210,100210,incident,high,160,incident,high,0.95,7.3407,gpt-4.1-mini

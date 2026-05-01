@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Live AI Analyst</title>
+  <meta http-equiv="refresh" content="10">
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#111a2e; --card:#0f172a; --text:#e5e7eb;
+      --muted:#9ca3af; --line:rgba(255,255,255,.08);
+      --blue:#3b82f6; --green:#22c55e; --red:#ef4444; --amber:#f59e0b;
+    }
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      margin:0; background:linear-gradient(180deg,var(--bg),#070b14 70%); color:var(--text);
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:22px;}
+    .topbar{
+      background:rgba(17,26,46,.88); border:1px solid var(--line); border-radius:14px;
+      padding:16px 18px; box-shadow:0 8px 30px rgba(0,0,0,.35); backdrop-filter:blur(6px);
+    }
+    h1{margin:0 0 4px 0;font-size:30px;}
+    .sub{color:var(--muted);font-size:13px;}
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px;}
+    .pill{
+      display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;
+      background:rgba(255,255,255,.06); border:1px solid var(--line); font-size:13px;
+    }
+    .muted{color:var(--muted);}
+    .badge{padding:4px 10px;border-radius:999px;font-weight:800;font-size:12px;border:1px solid var(--line);}
+    .badge.ok{background:#dcfce7;color:#166534;}
+    .badge.bad{background:#fee2e2;color:#991b1b;}
+    .btn{
+      display:inline-block;padding:9px 12px;border-radius:10px;border:1px solid var(--line);
+      background:rgba(255,255,255,.06); color:var(--text); text-decoration:none; font-size:13px;
+    }
+    .btn:hover{background:rgba(255,255,255,.10);}
+    .btn.primary{border-color:rgba(59,130,246,.6);}
+    .btn.danger{border-color:rgba(239,68,68,.55);}
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:16px;}
+    .panel{background:rgba(17,26,46,.55);border:1px solid var(--line);border-radius:14px;padding:14px 16px;}
+    .panel h2{margin:0 0 10px 0;font-size:18px;}
+    .card{
+      background:rgba(15,23,42,.82);border:1px solid var(--line);border-radius:14px;
+      padding:14px 16px; box-shadow:0 10px 26px rgba(0,0,0,.30);
+    }
+    .meta{color:var(--muted);font-size:12px;margin-bottom:8px;}
+    .block{margin-top:10px;}
+    .kfs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+    .kf{font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);}
+    .kv{color:var(--text);font-weight:650;}
+    .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+    ul{margin:8px 0 0 18px;}
+    li{margin:4px 0;}
+    details{
+      background:rgba(17,26,46,.40);border:1px solid var(--line);border-radius:14px;
+      padding:12px 14px; margin-top:10px;
+    }
+    summary{cursor:pointer;list-style:none;font-weight:700;}
+    summary::-webkit-details-marker{display:none;}
+    .sev{font-weight:900;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);font-size:12px;}
+    .sev.high{border-color:rgba(239,68,68,.6);}
+    .sev.medium{border-color:rgba(245,158,11,.6);}
+    .sev.low{border-color:rgba(34,197,94,.6);}
+    pre{
+      background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.12);
+      padding:12px; border-radius:12px; overflow-x:auto; color:#d1d5db; margin-top:10px;
+      white-space: pre-wrap;
+    }
+    .err{margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(239,68,68,.12);
+      border:1px solid rgba(239,68,68,.35);color:#fecaca;font-size:13px;}
+    .actions{margin-top:8px;}
+    .h2{margin-top:18px;}
+    .toast{
+      position:fixed; right:18px; bottom:18px;
+      background:rgba(17,26,46,.95); border:1px solid var(--line);
+      padding:10px 12px; border-radius:12px; color:var(--text);
+      box-shadow:0 10px 26px rgba(0,0,0,.35);
+      opacity:0; transform:translateY(10px); transition:all .2s ease;
+      max-width:420px; font-size:13px;
+    }
+    .toast.show{opacity:1; transform:translateY(0);}
+    @media (max-width:900px){.grid{grid-template-columns:1fr;}.cols{grid-template-columns:1fr;}}
+  </style>
+
+  <script>
+    function copyJson(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const txt = el.textContent || el.innerText || "";
+      navigator.clipboard.writeText(txt).then(() => {
+        showToast("Copied JSON to clipboard");
+      }).catch(() => {
+        showToast("Copy failed (browser permissions)");
+      });
+    }
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2500);
+    }
+    window.addEventListener("load", () => {
+      const params = new URLSearchParams(window.location.search);
+      const m = params.get("msg");
+      if (m) showToast(m);
+    });
+  </script>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <h1>Live AI Analyst</h1>
+      <div class="sub">Clinic-scale SOC triage stream (Indexer → Bundle → LLM → Results)</div>
+
+      <div class="row">
+        {{STATUS_BADGE}}
+        <span class="pill"><span class="muted">Mode</span> <b>{{MODE}}</b></span>
+        <span class="pill"><span class="muted">Last poll (UTC)</span> <b>{{LAST_POLL}}</b></span>
+        <span class="pill"><span class="muted">Last error</span> <b>{{LAST_ERROR}}</b></span>
+      </div>
+
+      <div class="row">
+        <a class="btn primary" href="/agent/on?msg=Agent%20enabled">Turn ON</a>
+        <a class="btn danger" href="/agent/off?msg=Agent%20disabled">Turn OFF</a>
+        <a class="btn" href="/mode/local?msg=Mode%20set%20to%20local">Use Local</a>
+        <a class="btn" href="/mode/cloud?msg=Mode%20set%20to%20cloud">Use Cloud</a>
+      </div>
+    </div>
+
+    {{LATEST_HTML}}
+
+    <h2 class="h2">History</h2>
+    {{HISTORY_HTML}}
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+</body>
+</html>

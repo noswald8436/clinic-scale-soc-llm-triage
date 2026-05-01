@@ -1,0 +1,24 @@
+[Unit]
+Description=Live AI Analyst (FastAPI + background triage worker)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=noswald
+Group=noswald
+WorkingDirectory=/opt/clinic-scale-soc-llm-triage/src/live_agent
+
+# Provide environment variables in KEY=value format (no 'export')
+EnvironmentFile=/home/noswald/.capstone_env
+
+ExecStart=/usr/bin/python3 -m uvicorn app:APP --host 0.0.0.0 --port 8080 --app-dir /opt/clinic-scale-soc-llm-triage/src/live_agent
+
+Restart=always
+RestartSec=3
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
