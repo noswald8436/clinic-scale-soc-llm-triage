@@ -13,3 +13,5 @@ If you're reviewing this repository for the capstone:
 ## Additional docs
 - Architecture: `docs/architecture.md`
 - Triage workflow: `docs/triage-workflow.md`
+
+- Detections list: `docs/detections.md`
