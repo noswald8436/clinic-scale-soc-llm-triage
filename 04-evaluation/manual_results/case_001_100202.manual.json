@@ -1,0 +1,17 @@
+{
+  "case_id": "case_001_100202",
+  "rule_id": "100202",
+  "scenario_label": "ehr_login_failed_single",
+  "analyst_classification": "suspicious",
+  "truth_classification": "suspicious",
+  "priority": "medium",
+  "mttt_seconds": 75,
+  "summary": "Single failed EHR login attempt for user clinicshared from 10.10.20.102 to /login (bad_password). Likely user error on shared workstation, but could be early credential probing.",
+  "recommended_next_steps": [
+    "Check for additional 100202 failures for the same user/source in the last 5–15 minutes.",
+    "Check whether 100205 (brute force correlation) triggered for this user/time window.",
+    "Check for any login_success events for clinicshared around the same time (success-after-failures).",
+    "Confirm the source host (10.10.20.102) is the expected shared workstation and the attempt aligns with normal clinic activity."
+  ],
+  "analyst_notes": "No evidence of compromise from a single event; monitor for repetition and escalate if pattern continues."
+}

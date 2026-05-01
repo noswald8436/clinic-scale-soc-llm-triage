@@ -1,0 +1,18 @@
+{
+  "case_id": "case_002_100205",
+  "rule_id": "100205",
+  "scenario_label": "ehr_bruteforce_login_failures",
+  "analyst_classification": "incident",
+  "truth_classification": "suspicious",
+  "priority": "high",
+  "mttt_seconds": 130,
+  "summary": "Brute-force pattern detected: repeated failed EHR logins within the correlation window targeting user clinicshared from 10.10.20.102 against /login.",
+  "recommended_next_steps": [
+    "Determine whether there was any successful login for clinicshared during/after the failure burst (possible compromise).",
+    "Validate whether 10.10.20.102 is expected for this account; check for similar failures against other usernames (spray behavior).",
+    "Containment: temporarily lock/reset clinicshared if activity is not expected; consider blocking 10.10.20.102 at the firewall if suspicious.",
+    "Scope: review other related alerts from the same source or targeting other accounts in the same timeframe.",
+    "Document timeline and preserve Wazuh evidence (screenshots/exports) for reporting."
+  ],
+  "analyst_notes": "Treat as incident-likely until verified as user error (e.g., repeated mistyping)."
+}

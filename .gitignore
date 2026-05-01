@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Secrets
+*.env
+.capstone_secrets
+.capstone_env
+**/*secrets*
+**/*key*
+**/*password*
+**/*token*
+
+# Outputs / artifacts
+/opt/capstone/05-triage-assistant/outputs/
+/05-triage-assistant/outputs/

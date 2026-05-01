@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "mode": "cloud",
+  "poll_seconds": 15,
+  "max_hits": 50,
+  "rule_ids": [
+    100202,
+    100205,
+    100210
+  ],
+  "show_items": 20,
+  "start_mode": "now"
+}

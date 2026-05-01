@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Live AI Analyst</title>
+  <meta http-equiv="refresh" content="10">
+  <link rel="stylesheet" href="/static/style.css">
+  <script>
+    function copyJson(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const txt = el.textContent || el.innerText || "";
+      navigator.clipboard.writeText(txt).then(() => {
+        showToast("Copied JSON to clipboard");
+      }).catch(() => {
+        showToast("Copy failed (browser permissions)");
+      });
+    }
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2500);
+    }
+    window.addEventListener("load", () => {
+      const params = new URLSearchParams(window.location.search);
+      const m = params.get("msg");
+      if (m) showToast(m);
+    });
+  </script>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">
+        <h1>Live AI Analyst</h1>
+        <div class="sub">Clinic-scale SOC triage stream (Indexer → Bundle → LLM → Results)</div>
+      </div>
+
+      <div class="row">
+        <span class="badge {{ 'ok' if cfg.enabled else 'bad' }}">{{ 'ENABLED' if cfg.enabled else 'DISABLED' }}</span>
+        <span class="pill"><span class="muted">Mode</span> <b>{{ cfg.mode }}</b></span>
+        <span class="pill"><span class="muted">Last poll (UTC)</span> <b>{{ st.last_poll_utc }}</b></span>
+        <span class="pill"><span class="muted">Last error</span> <b>{{ st.last_error }}</b></span>
+      </div>
+
+      <div class="row">
+        <a class="btn primary" href="/agent/on?msg=Agent%20enabled">Turn ON</a>
+        <a class="btn danger" href="/agent/off?msg=Agent%20disabled">Turn OFF</a>
+        <a class="btn" href="/mode/local?msg=Mode%20set%20to%20local">Use Local</a>
+        <a class="btn" href="/mode/cloud?msg=Mode%20set%20to%20cloud">Use Cloud</a>
+      </div>
+    </div>
+
+    {% if latest %}
+    <div class="grid">
+      <div class="card">
+        <div class="meta">
+          <b>{{ latest.ts_local }}</b> <span class="muted">({{ latest.ts_utc }})</span> |
+          rule <b>{{ latest.rule_id }}</b> | agent <b>{{ latest.agent }}</b> |
+          mode <b>{{ latest.meta.mode }}</b> | model <b>{{ latest.meta.model }}</b> |
+          elapsed <b>{{ latest.meta.elapsed_seconds }}s</b>
+        </div>
+
+        <div class="row">
+          <span class="sev {{ latest.sev_class }}">Priority: {{ latest.result.priority }}</span>
+          <span class="pill"><span class="muted">Classification</span> <b>{{ latest.result.classification }}</b></span>
+          <span class="pill"><span class="muted">Confidence</span> <b>{{ latest.result.confidence }}</b></span>
+        </div>
+
+        <div class="block"><b>Likely issue:</b> {{ latest.result.likely_attack_or_issue }}</div>
+
+        <div class="kfs">
+          <span class="kf">src_ip: <span class="kv">{{ latest.src_ip or '-' }}</span></span>
+          <span class="kf">user: <span class="kv">{{ latest.username or '-' }}</span></span>
+          <span class="kf">path: <span class="kv">{{ latest.path or '-' }}</span></span>
+          <span class="kf">reason: <span class="kv">{{ latest.reason or '-' }}</span></span>
+        </div>
+
+        <div class="cols">
+          <div class="panel">
+            <h2>Summary</h2>
+            <ul>
+              {% for s in latest.result.summary or [] %}
+              <li>{{ s }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel">
+            <h2>Next steps</h2>
+            <ul>
+              {% for s in latest.result.recommended_next_steps or [] %}
+              <li>{{ s }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+        {% if latest.result.error %}
+          <div class="err"><b>Error:</b> {{ latest.result.error }}</div>
+        {% endif %}
+
+        <details>
+          <summary>Show full result JSON</summary>
+          <div class="actions">
+            <button class="btn" onclick="copyJson('latest_json'); return false;">Copy JSON</button>
+          </div>
+          <pre id="latest_json">{{ latest.result_json }}</pre>
+        </details>
+      </div>
+
+      <div class="panel">
+        <h2>Stream</h2>
+        <div class="muted">
+          Newest folder: <b>{{ day_name }}</b><br>
+          Showing: <b>{{ show_items }}</b> items<br>
+          Refresh: every <b>10s</b>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="h2">History</h2>
+
+    {% for e in history %}
+      <details class="history">
+        <summary>
+          {{ e.ts_local }} | rule {{ e.rule_id }} | {{ e.agent }} |
+          <span class="sev {{ e.sev_class }}">{{ e.result.classification }} / {{ e.result.priority }}</span> |
+          {{ e.meta.mode }} ({{ e.meta.elapsed_seconds }}s)
+        </summary>
+
+        <div class="meta">UTC: {{ e.ts_utc }} | model {{ e.meta.model }}</div>
+
+        <div class="kfs">
+          <span class="kf">src_ip: <span class="kv">{{ e.src_ip or '-' }}</span></span>
+          <span class="kf">user: <span class="kv">{{ e.username or '-' }}</span></span>
+          <span class="kf">path: <span class="kv">{{ e.path or '-' }}</span></span>
+          <span class="kf">reason: <span class="kv">{{ e.reason or '-' }}</span></span>
+        </div>
+
+        <div class="block"><b>Likely issue:</b> {{ e.result.likely_attack_or_issue }}</div>
+
+        <details>
+          <summary>Show JSON</summary>
+          <div class="actions">
+            <button class="btn" onclick="copyJson('{{ e.base }}_json'); return false;">Copy JSON</button>
+          </div>
+          <pre id="{{ e.base }}_json">{{ e.result_json }}</pre>
+        </details>
+      </details>
+    {% endfor %}
+
+    {% else %}
+      <div class="panel" style="margin-top:16px;">
+        <h2>No results yet</h2>
+        <p class="muted">Turn ON the agent and generate an alert to see triage results.</p>
+      </div>
+    {% endif %}
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+</body>
+</html>

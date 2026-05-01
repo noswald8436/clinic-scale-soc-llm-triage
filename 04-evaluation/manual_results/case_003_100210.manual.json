@@ -1,0 +1,18 @@
+{
+  "case_id": "case_003_100210",
+  "rule_id": "100210",
+  "scenario_label": "ehr_upstream_failure_502",
+  "analyst_classification": "incident",
+  "truth_classification": "incident",
+  "priority": "high",
+  "mttt_seconds": 160,
+  "summary": "EHR web tier returned HTTP 502 on /api/login, indicating the upstream application service was unavailable/refusing connections. Likely EHR service outage impacting clinic operations.",
+  "recommended_next_steps": [
+    "Verify APP tier status on LNX-APP-01 (ehrapp running, recent restarts/crashes) and restore service if down.",
+    "Review WEB tier context (nginx_ehr / nginx_ehr_error) to confirm upstream connection refused vs other failure mode.",
+    "Check APP01 application logs and DB connectivity for backend errors that could cause upstream failure.",
+    "Scope impact: confirm whether multiple clinic workstations are affected and whether the outage is ongoing.",
+    "Review recent administrative actions/changes on WEB01/APP01 near the event timestamp (sudo/systemctl/config changes)."
+  ],
+  "analyst_notes": "Availability-impacting event; treat as urgent and confirm restoration of service."
+}
