@@ -36,3 +36,6 @@ venv/
 05-triage-assistant/live_agent/state.json
 05-triage-assistant/live_config.json
 src/live_agent/state.json
+
+# Deprecated: use docs/figures instead
+06-diagrams/
