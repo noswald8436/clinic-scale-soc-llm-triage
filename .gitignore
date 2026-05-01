@@ -17,3 +17,7 @@ venv/
 # Outputs / artifacts
 /opt/capstone/05-triage-assistant/outputs/
 /05-triage-assistant/outputs/
+
+# Runtime state (do not commit)
+05-triage-assistant/live_agent/state.json
+05-triage-assistant/live_config.json
