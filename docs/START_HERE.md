@@ -9,3 +9,7 @@ If you're reviewing this repository for the capstone:
 5) **Source code (Live AI Analyst):** `src/live_agent/`
 6) **Deployment templates:** `deploy/`
 7) **Lab workspace folders:** `00-project-notes/` through `05-triage-assistant/` (supporting artifacts)
+
+## Additional docs
+- Architecture: `docs/architecture.md`
+- Triage workflow: `docs/triage-workflow.md`
