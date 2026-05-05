@@ -1,0 +1,11 @@
+---
+- name: Capstone lab baseline (site)
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure base packages
+      ansible.builtin.package:
+        name:
+          - curl
+          - jq
+        state: present

@@ -1,0 +1,10 @@
+# Non-secret shared variables (example)
+ehr_ui_root: /var/www/ehrui
+ehr_app_port: 8000
+
+# Ollama
+ollama_model: mistral:7b-instruct
+
+# Wazuh rules file locations (manager)
+wazuh_rules_ehr: /var/ossec/etc/rules/local_ehrapp_rules.xml
+wazuh_rules_clinic: /var/ossec/etc/rules/local_clinic_detections.xml

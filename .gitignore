@@ -39,3 +39,7 @@ src/live_agent/state.json
 
 # Deprecated: use docs/figures instead
 06-diagrams/
+
+# Ansible secrets (do not commit)
+infra/ansible/group_vars/all/secrets.yml
+infra/ansible/group_vars/all/*.vault.yml
