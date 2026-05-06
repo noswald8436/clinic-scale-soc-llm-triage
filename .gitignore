@@ -43,3 +43,10 @@ src/live_agent/state.json
 # Ansible secrets (do not commit)
 infra/ansible/group_vars/all/secrets.yml
 infra/ansible/group_vars/all/*.vault.yml
+
+# Ansible secrets (do not commit)
+infra/ansible/group_vars/all/secrets.yml
+infra/ansible/group_vars/all/*.vault.yml
+
+# Local inventory (do not commit)
+infra/ansible/inventory/inventory.ini
