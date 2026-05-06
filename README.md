@@ -2,7 +2,7 @@
 
 Capstone project demonstrating clinic-scale security alert triage using Wazuh and a standardized, sanitized case-bundle format. The project compares cloud vs local LLM-assisted triage and includes a Live AI Analyst web UI that triages alerts as they occur.
 
-**Start here:** `docs/START_HERE.md`
+**Start here:** [docs/START_HERE.md](docs/START_HERE.md)
 
 ## Why this project
 Remote/satellite clinics often operate with limited on-site IT. High-signal security and availability alerts can be triaged slowly or inconsistently when telemetry is uneven and triage is ad hoc. This project builds a repeatable workflow and measures timeliness and agreement across triage modes.
@@ -29,11 +29,11 @@ Remote/satellite clinics often operate with limited on-site IT. High-signal secu
 - `00-project-notes/`, `02-wazuh/`, `03-cases/`, `04-evaluation/`, `05-triage-assistant/` — lab workspace artifacts and supporting materials
 
 ## Documentation
-- Project overview: `docs/overview.md`
-- Live demo runbook: `docs/runbook-live-demo.md`
+- Project overview: [docs/overview.md](docs/overview.md)
+- Live demo runbook: [docs/runbook-live-demo.md](docs/runbook-live-demo.md)
 
 ## Figures
-- Network architecture: `docs/figures/fig01_network_architecture.png`
+- Network architecture: [fig01_network_architecture.png](docs/figures/fig01_network_architecture.png)
 - EHR request & logging flow: `docs/figures/fig02_ehr_request_logging_flow.png`
 - Detection-to-triage pipeline: `docs/figures/fig03_detection_triage_pipeline.png`
 - Live AI Analyst architecture: `docs/figures/fig04_live_ai_analyst_architecture.png`
